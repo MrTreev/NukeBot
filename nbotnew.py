@@ -3,7 +3,7 @@ from discord.ext import commands
 keys={}
 nuke=open("nuke.token", "r")
 for line in nuke:
-    (key,val)=line.split(' ')
+    (key,val)=line.split('>')
     keys[key]=val
 
 
