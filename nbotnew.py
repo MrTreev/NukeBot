@@ -1,7 +1,11 @@
 import discord, nhentai, random, requests
 from discord.ext import commands
-TOKEN = "NzY2NTEzNjcwNzYzMDUzMDU2.X4kdfA.za4hhqsbEDZmc0JLBPWYhKau2I0"
-GUILD = '766513670763053056'
+keys={}
+nuke=open("nuke.token", "r")
+for line in nuke:
+    (key,val)=line.split(' ')
+    keys[key]=val
+
 
 bot = commands.Bot(command_prefix='!')
 
@@ -39,4 +43,4 @@ async def gibcode(ctx, arg):
         if i[0] not in res and (i != ''):
             res.append(i[2])
     await ctx.send(name+"\n"+thumb+"\n"+str(res))
-bot.run(TOKEN)
+bot.run(keys['TOKEN'])
