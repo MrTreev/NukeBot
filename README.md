@@ -11,4 +11,5 @@ Prefix: >
 ## Commands:
 
 `nukemedaddy` Produces a random doujin
+
 `gibcode <code>` Shows what the nuke code produces
