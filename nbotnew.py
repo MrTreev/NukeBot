@@ -123,4 +123,13 @@ async def checkcurse(ctx):
 
 
 
+@bot.command()
+async def cursedtags(ctx):
+    cursedText=""
+    for tag in cursed:
+        cursedText=cursedText+"\n"+tag
+    await ctx.send(cursedText)
+
+
+
 bot.run(keys['TOKEN'])
