@@ -1,7 +1,8 @@
-import os
+import os, logging
 import discord, nhentai, random, requests
 from discord.ext import commands
 fileDir = os.path.dirname(os.path.abspath(__file__))
+logging.basicConfig(filename="nbot.log", filemode='w', format="%(levelname)s: %(message)s", level=logging.DEBUG)
 cursedfile=open(fileDir+"/cursed.tags","r")
 cursed=cursedfile.read().splitlines()
 cursedfile.close()
@@ -41,32 +42,38 @@ async def nukemedaddy(ctx):
         if i[0] not in res and (i != ''):
             res.append(i[2])
     user=ctx.message.author.id
+    logging.debug('user=%s',user)
     server=ctx.guild.id
+    logging.debug('server=%s',server)
     add=0
     for tag in res:
         if tag in cursed:
             add=add+1
-    print("add="+str(add))
+            logging.info('add=%s',add)
     try:
         userCursed=open(fileDir+"/servers"+"/"+str(server)+"/"+str(user),"r")
         userCursedVal=int(userCursed.readline())
         userCursed.close()
         userCursed=open(fileDir+"/servers"+"/"+str(server)+"/"+str(user),"w")
+        logging.debug('added to users cursed value')
     except:
         try:
             userCursed=open(fileDir+"/servers"+"/"+str(server)+"/"+str(user),"w")
             userCursed.write("0")
             userCursedVal=0
+            logging.debug('initialised new user')
         except:
             os.mkdir(fileDir+"/servers"+"/"+str(server))
             userCursed=open(fileDir+"/servers"+"/"+str(server)+"/"+str(user),"w")
             userCursed.write("0")
             userCursedVal=0
+            logging.debug('made new server directory and initialised new user')
     cursedMessage="Cursed Value: "+str(add)
     await ctx.send(name+"\n"+thumb+"\n"+code+"\n"+str(res)+"\n"+cursedMessage)
     newCursedVal=str(userCursedVal+add)
     userCursed.write(newCursedVal)
     userCursed.close()
+    logging.info('nukemedaddy finished')
 
 
 
@@ -83,7 +90,8 @@ async def gib(ctx, *, args):
                 if i[0] not in res and (i != ''):
                     res.append(i[2])
             await ctx.send(name+"\n"+thumb+"\n"+str(res))
-        except:
+        except Exception as e:
+            logging.error("gib code failed: %s",e)
             await ctx.send("unable to fulfil request")
     elif isinstance(args,str):
         try:
@@ -107,8 +115,9 @@ async def gib(ctx, *, args):
                 if i[0] not in res and (i != ''):
                     res.append(i[2])
             await ctx.send(name+"\n"+thumb+"\n"+ret[key]+"\n"+str(res))
-        except:
+        except Exception as e:
             await ctx.send("unable to fulfil request")
+            logging.error("gib tag failed: %s",e)
     else:
         await ctx.send("WTF are you asking for?")
 
