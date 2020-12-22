@@ -53,10 +53,15 @@ async def nukemedaddy(ctx):
         userCursed.close()
         userCursed=open(fileDir+"/servers"+"/"+str(server)+"/"+str(user),"w")
     except:
-        os.mkdir(fileDir+"/servers"+"/"+str(server))
-        userCursed=open(fileDir+"/servers"+"/"+str(server)+"/"+str(user),"w")
-        userCursed.write("0")
-        userCursedVal=0
+        try:
+            userCursed=open(fileDir+"/servers"+"/"+str(server)+"/"+str(user),"w")
+            userCursed.write("0")
+            userCursedVal=0
+        except:
+            os.mkdir(fileDir+"/servers"+"/"+str(server))
+            userCursed=open(fileDir+"/servers"+"/"+str(server)+"/"+str(user),"w")
+            userCursed.write("0")
+            userCursedVal=0
     cursedMessage="Cursed Value: "+str(add)
     await ctx.send(name+"\n"+thumb+"\n"+code+"\n"+str(res)+"\n"+cursedMessage)
     newCursedVal=str(userCursedVal+add)
